@@ -7,9 +7,9 @@
 ; compile with pasmo -v --tapbas unexpectedb.asm unexpectedb.tap
 ; sorry for the mixed language comments, they are in Turkish
 
-satirbasi equ 16384+25 ;scroller satır adresi
+satirbasi equ 16384+25 ;scroller satÃ½r adresi
 snow_count equ 120     ;kac adet kar olacak?
-slow equ snow_count-90  ;yavaş yagan kar sayisi
+slow equ snow_count-90  ;yavaÃ¾ yagan kar sayisi
 med equ slow-10    ;orta hizda yaganlar    (hiz=2)
 hi equ med-5    ;deli gibi yaganlar       (hiz=3)
 sintab2 equ &8B00
@@ -17,7 +17,7 @@ sintab3 equ &8C00
 locxy equ &8E00
 font equ &9600
 
-break_call_scroller equ 70  ;yağ gibi bir kayma için bu rakam 60k-70k ts arasına denk gelmeli
+break_call_scroller equ 70  ;yaÃ° gibi bir kayma iÃ§in bu rakam 60k-70k ts arasÃ½na denk gelmeli
 org 32768
 
 ld sp,65535
@@ -44,7 +44,7 @@ call align_tables
 
 
 
-ld ix,yazi             ;metnimizi index registerine yüklüyoruz
+ld ix,yazi             ;metnimizi index registerine yÃ¼klÃ¼yoruz
 
 ; --- setup snowflake table ---
 ld c,snow_count+1     ;we'll be preparing for snow flakes
@@ -412,8 +412,8 @@ rept 19               ;33 kere tekrar (pasmo macro)
  dec l
 endm
 
-inc h                 ;alt satıra geç
-ld a,19               ;satir sonuna sardır
+inc h                 ;alt satÃ½ra geÃ§
+ld a,19               ;satir sonuna sardÃ½r
 add a,l
 ld l,a
 
@@ -441,38 +441,38 @@ pop de
 ret
 
 
-; Burada ana döngü bitiyor, harf yazdırma altrutini burada:
+; Burada ana dÃ¶ngÃ¼ bitiyor, harf yazdÃ½rma altrutini burada:
 
 harfibas                ;tek bir karakter basmak icin cok ugrasiyorum sanki
-ld de,#4019             ;hep aynı lokasyona basıyoruz
+ld de,#4019             ;hep aynÃ½ lokasyona basÃ½yoruz
 ld a,(ix+0)		;diziden yeni bir karakter alalim
 or a                    ;a 0 ise Z flag reset edilir.
-JR NZ,jump1             ;string sonu değil ise jump1'den devam
-                        ;yoksa, sıfırı bulduk, string sonu
-ld ix,yazi              ;başa alalım
+JR NZ,jump1             ;string sonu deÃ°il ise jump1'den devam
+                        ;yoksa, sÃ½fÃ½rÃ½ bulduk, string sonu
+ld ix,yazi              ;baÃ¾a alalÃ½m
 jr harfibas
 
 jump1
-ld bc, font-256		;BC'ye ROM font adresini yüklerim #3c00
-ld l,a                  ;karakter kodunu kullanarak font'un o karakterine ulaşacağım
+ld bc, font-256		;BC'ye ROM font adresini yÃ¼klerim #3c00
+ld l,a                  ;karakter kodunu kullanarak font'un o karakterine ulaÃ¾acaÃ°Ã½m
 ld h,0
 
-add hl,hl		;HL=HL*8 karakterin ROM'daki pozisyonuna ulaşmak için
+add hl,hl		;HL=HL*8 karakterin ROM'daki pozisyonuna ulaÃ¾mak iÃ§in
 add hl,hl               ;gerekli olan hesap :)
-add hl,hl               ;ne demişler, çarpma, hızlıca toplamak demek :)
+add hl,hl               ;ne demiÃ¾ler, Ã§arpma, hÃ½zlÃ½ca toplamak demek :)
 
-add hl,bc		;ve nihayet HL doğru font verisinin ilk byte'ını gösteriyor
+add hl,bc		;ve nihayet HL doÃ°ru font verisinin ilk byte'Ã½nÃ½ gÃ¶steriyor
 
-ld b,#08                ;8 byte kopyalayacağız
+ld b,#08                ;8 byte kopyalayacaÃ°Ã½z
 
 ekranakoy
-ld a,(hl)		;fontun ilk byte'ını alalım
-ld (de),a               ;ilk byte'ı ekrana yazalım
+ld a,(hl)		;fontun ilk byte'Ã½nÃ½ alalÃ½m
+ld (de),a               ;ilk byte'Ã½ ekrana yazalÃ½m
 
-inc l                   ;HL ikinci byte'ı göstersin
-inc d                   ;DE ikinci satıra geçsin (speccy ekran kaşesi bu işlem için tasarlanmış,
-                        ;aşağı/yukarı hareket etmek için hibyte'ı değiştirmek yetiyor
-djnz ekranakoy          ;bu işlem b=0 olana kadar tekrar edecek
+inc l                   ;HL ikinci byte'Ã½ gÃ¶stersin
+inc d                   ;DE ikinci satÃ½ra geÃ§sin (speccy ekran kaÃ¾esi bu iÃ¾lem iÃ§in tasarlanmÃ½Ã¾,
+                        ;aÃ¾aÃ°Ã½/yukarÃ½ hareket etmek iÃ§in hibyte'Ã½ deÃ°iÃ¾tirmek yetiyor
+djnz ekranakoy          ;bu iÃ¾lem b=0 olana kadar tekrar edecek
 
 ret                  ;bitti. yallah
 
